@@ -1,95 +1,108 @@
-# 📊 Attendance Management System – QR Code Based (DBMS Project)
-Welcome to the official repository of the QR Code-Based Attendance Management System, a comprehensive DBMS project developed as part of the academic curriculum at SRM Institute of Science and Technology. This project aims to modernize the conventional attendance tracking methods used in educational institutions by introducing a secure, accurate, and user-friendly digital solution. Built with a powerful combination of modern web technologies and database principles, the system addresses key pain points in traditional manual systems such as proxy attendance, record mismanagement, time consumption, and lack of real-time monitoring.
+# Attendance Management System
 
-## 📌 Project Overview
-The Attendance Management System is a web-based platform designed to automate and streamline attendance tracking using QR code scanning. It supports multi-role access, allowing students, faculty, and administrators to interact with the system according to their specific responsibilities. Faculty members can generate QR codes dynamically for each session, which are valid for a limited time (5 minutes) to prevent misuse. Students can scan these codes to instantly mark their attendance, and administrators can oversee system-wide activity, manage users, and ensure data integrity.
+A comprehensive attendance management system built with React.js, Node.js, and MySQL.
 
-The platform promotes efficiency, transparency, and security in attendance recording. It maintains detailed records of every attendance entry, including metadata like timestamps, device info, and geolocation, making it difficult to manipulate or falsify records. The entire system is developed using Node.js for backend services, Express.js for routing, MySQL with Sequelize ORM for managing relational databases, and Handlebars with Tailwind CSS for rendering responsive and clean front-end interfaces.
+## Features
 
-## 💡 Key Features
-The system offers several innovative and well-integrated features that enhance both usability and security:
+- User Authentication (Student, Faculty, Admin)
+- QR Code-based Attendance
+- Attendance Records Management
+- Report Generation
+- Role-based Access Control
 
-QR Code Attendance Mechanism: Each attendance session generates a unique QR code that is valid for only 5 minutes, drastically reducing the chances of proxy attendance or misuse.
+## Prerequisites
 
-Multi-role Dashboards: Students can check attendance history and join classes using QR codes. Faculty can manage sessions, view class data, and monitor student participation. Admins have control over user roles, database management, and report generation.
+- Node.js (v14 or higher)
+- MySQL (v8 or higher)
+- npm or yarn
 
-Instant QR Generation: Faculty can create attendance sessions on the fly, and students can scan and record attendance in real time.
+## Setup Instructions
 
-Metadata Logging: Every attendance entry includes timestamp, IP address, device info, and location data.
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd attendance-management-system
+```
 
-Improved Relational Structure: Tables are normalized and well-linked with foreign keys to ensure data consistency and scalability.
+2. Install dependencies:
+```bash
+npm run install:all
+```
 
-## 🛠️ Technology Stack
-To ensure both scalability and performance, the system is built using a robust set of technologies:
+3. Create a `.env` file in the root directory with the following variables:
+```env
+PORT=5000
+DB_HOST=localhost
+DB_USER=your_mysql_username
+DB_PASSWORD=your_mysql_password
+DB_NAME=attendance_system
+JWT_SECRET=your_jwt_secret_key
+```
 
-Backend: Node.js and Express.js for fast and efficient server-side operations.
+4. Set up the database:
+   - Create a MySQL database named `attendance_system`
+   - Run the SQL commands from `schema.sql` to create the tables
 
-Frontend: HTML, Handlebars (templating engine), and Tailwind CSS for a responsive and modern UI.
+5. Start the development servers:
+```bash
+npm run dev:full
+```
 
-Database: MySQL relational database, managed via Sequelize ORM for structured querying and consistency.
+The application will be available at:
+- Frontend: http://localhost:3000
+- Backend: http://localhost:5000
 
-Authentication & Security: Secure login, password hashing, role-based access control, and session validation.
+## Default Admin Account
 
-This technology stack ensures modularity, maintainability, and a smooth user experience, making the application suitable for real-time institutional deployment.
+- Email: admin@example.com
+- Password: admin123
 
-## 🧱 Database Design & Normalization
-The system relies on a relational database design consisting of five main entities:
+## Project Structure
 
-Users: Stores login information and roles of students, faculty, and administrators.
+```
+attendance-management-system/
+├── client/                 # React frontend
+│   ├── src/
+│   │   ├── components/    # React components
+│   │   ├── App.js        # Main App component
+│   │   └── index.js      # Entry point
+├── routes/                # Backend routes
+├── config/               # Configuration files
+├── server.js             # Backend entry point
+└── schema.sql           # Database schema
+```
 
-Classes: Contains metadata about academic subjects and the faculty assigned.
+## Available Scripts
 
-Sessions: Records session details including date, time, and QR code.
+- `npm start`: Start the backend server
+- `npm run dev`: Start the backend server with nodemon
+- `npm run client`: Start the frontend development server
+- `npm run dev:full`: Start both frontend and backend servers
+- `npm run install:all`: Install dependencies for both frontend and backend
 
-Student_Classes: Represents the many-to-many relationship between students and their enrolled classes.
+## API Endpoints
 
-Attendances: Captures the actual attendance data, linked with student and session IDs, along with other verification attributes.
+### Authentication
+- POST /api/auth/login - User login
+- POST /api/auth/register - User registration
 
-The schema is designed using Entity-Relationship modeling and adheres to the highest level of database normalization (up to BCNF). This minimizes redundancy, eliminates anomalies, and guarantees data integrity during inserts, updates, and deletions.
+### Attendance
+- GET /api/attendance/records - Get attendance records
+- POST /api/attendance/submit - Submit attendance
+- PUT /api/attendance/records/:id - Update attendance record
+- DELETE /api/attendance/records/:id - Delete attendance record
+- GET /api/attendance/export - Export attendance records
 
-## 🧠 Backend Intelligence & Smart Features
-The backend is not only functional but also intelligent. We implemented stored procedures to identify low-attendance students dynamically, triggers to mark attendance as 'late' based on time thresholds, and cursors to handle bulk attendance checks efficiently. The system also includes custom functions to retrieve session-specific attendance statuses, ensuring quick and accurate queries.
+### Class Management
+- GET /api/class/list - Get class list
+- POST /api/class/create - Create new class
+- GET /api/class/active - Get active class
+- PUT /api/class/:id/deactivate - Deactivate class
 
-For concurrency and transaction safety, the system supports ACID-compliant operations including transaction rollback, commit, and error handling. The transaction control mechanisms and recovery strategies ensure that the system performs reliably even under multi-user stress or during unexpected failures.
+## Contributing
 
-## 🔐 Security, Privacy, and Access Control
-Security is at the core of this application. Each user must authenticate before accessing their dashboard, and role-based access ensures that actions are limited according to the user's designation (student, faculty, or admin). Sensitive data is encrypted, and changes to attendance records are logged to maintain transparency.
-
-To prevent misuse, students can only mark attendance for sessions they are enrolled in and within the QR code’s valid time window. Faculty and admins are provided with full audit trails of any edited records, along with timestamped logs.
-
-## 📈 Scalability and Performance
-The system is optimized for both current usage and future scalability. Whether it's a small classroom or a large university with thousands of users, the modular design and optimized queries ensure consistent performance. Advanced indexing strategies, caching mechanisms, and load-balanced database calls make it ready for large-scale deployment.
-
-## 📊 Future Scope
-Looking ahead, the Attendance Management System can be enhanced in numerous ways. Planned future additions include:
-
-Mobile Application: Native Android/iOS app with push notifications and location-based check-ins.
-
-AI-Based Analytics: Predictive attendance trend detection using machine learning.
-
-Facial Recognition: Integration of biometric verification for zero-touch attendance.
-
-Cloud Hosting & Microservices: Deployment on scalable cloud infrastructure for global reach.
-
-Integration with LMS & HRMS: Seamless data exchange with existing Learning Management or HR systems.
-
-## 👨‍💻 Project Team
-This project was developed by:
-
-M.V.S. Harshith – RA2311003011196
-
-V. Vennela Reddy – RA2311003011203
-
-D.S. Rohith – RA2311003011219
-
-Under the guidance of Dr. Baranidharan B,
-Professor, Department of Computing Technologies,
-SRM Institute of Science and Technology.
-
-## 🏛️ Institution
-Department of Computing Technologies
-College of Engineering and Technology
-SRM Institute of Science and Technology, Kattankulathur
-
-## 📜 License and Use
-This repository is intended for academic and demonstration purposes only. Please contact the authors for usage rights, collaborations, or deployment guidance.
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a new Pull Request 
